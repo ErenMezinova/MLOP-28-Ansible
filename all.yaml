@@ -1,0 +1,11 @@
+packages_to_install:
+  - net-tools
+  - git
+  - tree
+  - htop
+  - mc
+  - vim
+
+users:
+  - name: devops_1
+  - name: test_1
