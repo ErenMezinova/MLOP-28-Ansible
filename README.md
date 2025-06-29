@@ -5,14 +5,15 @@
 1. Управляющая нода (Ansible)
 2. Целевая нода, к которой Ansible подключается по SSH (далее нода будет называться Target).
    
-Они находятся в одной Docker-сети, и Ansible выполняет playbook на второй ноде Target. Для каждой ноды был создан docketfile с требуемыми параметрами и собраны в docker-compose.
-Также создан ansible.cfg 
+Они находятся в одной Docker-сети и Ansible выполняет playbook на второй ноде Target. Для каждой ноды был создан Dockerfile с требуемыми параметрами. Собраны с помощью docker-compose.
+Также был создан ansible.cfg 
 ````
 [defaults]
 host_key_checking = False
 inventory = inventory.ini
 ```
-Все файлы размещены на ноде ansible в папке ansible. 
+Все файлы размещены на ноде ansible в папке ansible.
+(см. прикрепленные скриншоты)
 
 * Homework.yaml
 ````
