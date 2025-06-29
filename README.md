@@ -11,7 +11,8 @@
 [defaults]
 host_key_checking = False
 inventory = inventory.ini
-```
+````
+
 Все файлы размещены на ноде ansible в папке ansible.
 (см. прикрепленные скриншоты)
 
