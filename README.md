@@ -1,10 +1,23 @@
 # MLOP28-Mezinova-Ansible
 # Домашняя работа к занятию “Ansible”
 
+Для реализации задания была создана инфраструктура с двумя docker-контейнерами:
+1. Управляющая нода (Ansible)
+2. Целевая нода, к которой Ansible подключается по SSH (далее нода будет называться Target).
+   
+Они находятся в одной Docker-сети, и Ansible выполняет playbook на второй ноде Target. Для каждой ноды был создан docketfile с требуемыми параметрами и собраны в docker-compose.
+Также создан ansible.cfg 
+````
+[defaults]
+host_key_checking = False
+inventory = inventory.ini
+```
+Все файлы размещены на ноде ansible в папке ansible. 
+
 * Homework.yaml
 ````
 ---
-- name: Netology ML Playbook
+- name: Setup netology-ml target
   hosts: netology-ml
   become: true
   vars_files:
@@ -12,37 +25,37 @@
 
   tasks:
 
-    - name: Проверка доступности хоста
+    - name: Проверка пинга
       ansible.builtin.ping:
 
     - name: Обновление пакетов
       ansible.builtin.apt:
         update_cache: yes
+        upgrade: dist
 
-    - name: Установка необходимых пакетов
+    - name: Установка пакетов
       ansible.builtin.apt:
         name: "{{ packages_to_install }}"
         state: present
-      
+
     - name: Копирование файла test.txt
       ansible.builtin.copy:
         src: test.txt
         dest: /tmp/test.txt
-        mode: '0644'
 
-    - name: Создание пользователей и их home-директорий
+    - name: Создание пользователей
       ansible.builtin.user:
         name: "{{ item.name }}"
         state: present
-        shell: /bin/bash
         create_home: yes
+        shell: /bin/bash
       loop: "{{ users }}"
 ````
 
 * inventory.ini
 ````
 [netology-ml]
-192.168.100.10 ansible_user=ansible ansible_ssh_private_key_file=/root/.ssh/id_rsa
+target ansible_user=ansible ansible_ssh_pass=ansible ansible_port=22 ansible_connection=ssh
 ````
 * group_vars\all.yaml
 ````
